@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Course</title>
+</head>
+
+<body>
+
+    <h2>Create Course</h2>
+
+    <input type="text" id="name" placeholder="Course name" />
+    <input type="number" id="credits" placeholder="Credits" />
+
+    <button onclick="createCourse()">Create</button>
+
+    <p id="message"></p>
+
+    <script>
+        async function createCourse() {
+            const name = document.getElementById('name').value;
+            const credits = document.getElementById('credits').value;
+            const message = document.getElementById('message');
+
+            message.textContent = '';
+            message.className = '';
+
+            if (!name || !credits) {
+                message.textContent = 'All fields are required';
+                message.className = 'error';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3002/course', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        credits: Number(credits)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    message.textContent = data.message || 'Error creating course';
+                    message.className = 'error';
+                    return;
+                }
+
+                message.textContent = 'Course created successfully!';
+                message.className = 'success';
+                loadCourses();
+
+                document.getElementById('name').value = '';
+                document.getElementById('credits').value = '';
+
+            } catch (error) {
+                message.textContent = 'Cannot connect to server';
+                message.className = 'error';
+            }
+        }
+
+        async function loadCourses() {
+            try {
+                const response = await fetch('http://localhost:3001/course');
+                const courses = await response.json();
+
+                const courseList = document.getElementById('courseList');
+                courseList.innerHTML = '';
+
+                courses.forEach(course => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                    <td>${course.name}</td>
+                    <td>${course.credits}</td>
+                `;
+
+                    courseList.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading courses', error);
+            }
+        }
+    </script>
+
+    <h2>Course List</h2>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        thead {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+
+    <h2>Course List</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Credits</th>
+            </tr>
+        </thead>
+        <tbody id="courseList">
+        </tbody>
+    </table>
+
+
+    <script>
+        loadCourses();
+    </script>
+
+</body>
+
+</html>
