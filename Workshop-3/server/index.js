@@ -40,7 +40,7 @@ app.post('/course', async (req, res) => {
         name: req.body.name,
         code: req.body.code,
         description: req.body.description,
-        profesorId: req.body.profesorId
+        //profesorId: req.body.profesorId
     })
 
     try {
