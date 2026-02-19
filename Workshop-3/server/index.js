@@ -115,7 +115,6 @@ app.post('/professor', async (req, res) => {
 
     try {
         const professorCreated = await professor.save();
-        //add header location to the response
         res.header('Location', `/professor?id=${professorCreated._id}`);
         res.status(201).json(professorCreated)
     }
@@ -123,6 +122,20 @@ app.post('/professor', async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 });
+
+app.get('/professor', async (req, res) => {
+    try {
+        if (!req.query.id) {
+            const data = await Professor.find();
+            return res.status(200).json(data)
+        }
+        const data = await Professor.findById(req.query.id);
+        res.status(200).json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 
 
 //start the app
