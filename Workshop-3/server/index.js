@@ -137,6 +137,28 @@ app.get('/professor', async (req, res) => {
     }
 })
 
+app.patch('/professor', async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(400).json({ message: error.message })
+        }
+
+        const updatedProfessor = await Professor.findByIdAndUpdate(
+            req.query.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedProfessor) {
+            return res.status(404).json({ message: error.message })
+        }
+
+        res.status(200).json(updatedProfessor)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
 
 //start the app
 app.listen(3002, () => console.log(`UTN API service listening on port 3002!`))
