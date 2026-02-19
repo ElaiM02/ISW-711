@@ -160,5 +160,20 @@ app.patch('/professor', async (req, res) => {
     }
 })
 
+app.delete('/professor', async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(400).json({ message: error.message })
+        }
+
+        const deletedProfessor = await Professor.findByIdAndDelete(req.query.id)
+
+        res.status(200).json({ deletedProfessor })
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
 //start the app
 app.listen(3002, () => console.log(`UTN API service listening on port 3002!`))
