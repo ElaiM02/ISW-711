@@ -38,7 +38,9 @@ app.use(cors({
 app.post('/course', async (req, res) => {
     const course = new Course({
         name: req.body.name,
-        credits: req.body.credits
+        code: req.body.code,
+        description: req.body.description,
+        profesorId: req.body.profesorId
     })
 
     try {
