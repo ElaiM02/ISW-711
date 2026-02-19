@@ -5,9 +5,18 @@ const courseSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    credits: {
+    code: {
         required: true,
         type: Number
+    },
+    description: {
+        required: true,
+        type: String
+    },
+    profesorId: {
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Professor'
     }
 })
 
