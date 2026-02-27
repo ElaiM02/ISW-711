@@ -16,7 +16,7 @@ const userSchema = new mongosee.Schema({
     },
     token: {
         type: String,
-        required: true
+        required: false
     }
 }, {
     timestamps: true

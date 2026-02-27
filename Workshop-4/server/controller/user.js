@@ -1,6 +1,6 @@
 const User = require('../models/user');
 
-application.post('/auth/token', async (req, res) => {
+application.post('/user', async (req, res) => {
     const user = new User({
         name: 'Eliam',
         email: 'eliam@gmail.com',
