@@ -11,6 +11,8 @@ const Course = require('./models/course');
 const Professor = require('./models/professor');
 const mongoString = process.env.DATABASE_URL;
 
+const { authenticateToken, generateToken } = require('./controller/auth');
+
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
@@ -53,6 +55,9 @@ app.post('/course', async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 });
+
+//autn routes
+app.post('/auth/token', generateToken);
 
 app.get('/course', async (req, res) => {
     try {
