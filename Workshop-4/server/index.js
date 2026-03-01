@@ -35,26 +35,12 @@ app.use(cors({
     methods: '*'
 }));
 
-
-//routes
-app.use('/api', require('./routes/course'));
 //autn routes
 app.post('/auth/token', generateToken);
 
-app.get('/course', async (req, res) => {
-    try {
-        //if id is passed as query param, return single course else return all courses
-        if (!req.query.id) {
-            const data = await Course.find();
-            return res.status(200).json(data)
-        }
-        const data = await Course.findById(req.query.id);
-        res.status(200).json(data)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
+//routes
+app.use('/api', require('./routes/course'));
+
 
 app.patch('/course', async (req, res) => {
     try {
