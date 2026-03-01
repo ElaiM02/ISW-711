@@ -41,21 +41,6 @@ app.post('/auth/token', generateToken);
 //routes
 app.use('/api', require('./routes/course'));
 
-
-app.delete('/course', async (req, res) => {
-    try {
-        if (!req.query.id) {
-            return res.status(400).json({ message: error.message })
-        }
-
-        const deletedCourse = await Course.findByIdAndDelete(req.query.id)
-
-        res.status(200).json({ deletedCourse })
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
-
 //CRUD for professor
 app.post('/professor', async (req, res) => {
     const professor = new Professor({
