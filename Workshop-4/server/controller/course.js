@@ -10,7 +10,6 @@ const coursePost = async (req, res) => {
 
     try {
         const courseCreated = await course.save();
-        //add header location to the response
         res.header('Location', `/course?id=${courseCreated._id}`);
         res.status(201).json(courseCreated)
     }
@@ -21,7 +20,6 @@ const coursePost = async (req, res) => {
 
 const courseGet = async (req, res) => {
     try {
-        //if id is passed as query param, return single course else return all courses
         if (!req.query.id) {
             const data = await Course.find();
             return res.status(200).json(data)
@@ -56,9 +54,23 @@ const coursePatch = async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 }
+const courseDelete = async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(400).json({ message: error.message })
+        }
+
+        const deletedCourse = await Course.findByIdAndDelete(req.query.id)
+
+        res.status(200).json({ deletedCourse })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
 
 module.exports = {
     coursePost,
     courseGet,
-    coursePatch
+    coursePatch,
+    courseDelete
 }
