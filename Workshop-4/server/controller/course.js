@@ -19,6 +19,22 @@ const coursePost = async (req, res) => {
     }
 };
 
+const courseGet = async (req, res) => {
+    try {
+        //if id is passed as query param, return single course else return all courses
+        if (!req.query.id) {
+            const data = await Course.find();
+            return res.status(200).json(data)
+        }
+        const data = await Course.findById(req.query.id);
+        res.status(200).json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 module.exports = {
-    coursePost
+    coursePost,
+    courseGet
 }
