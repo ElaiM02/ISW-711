@@ -42,29 +42,6 @@ app.post('/auth/token', generateToken);
 app.use('/api', require('./routes/course'));
 
 
-app.patch('/course', async (req, res) => {
-    try {
-        if (!req.query.id) {
-            return res.status(400).json({ message: error.message })
-        }
-
-        const updatedCourse = await Course.findByIdAndUpdate(
-            req.query.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedCourse) {
-            return res.status(404).json({ message: error.message })
-        }
-
-        res.status(200).json(updatedCourse)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-})
-
 app.delete('/course', async (req, res) => {
     try {
         if (!req.query.id) {
