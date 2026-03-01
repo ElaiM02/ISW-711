@@ -7,7 +7,6 @@ const express = require('express');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const Course = require('./models/course');
 const User = require('./models/user');
 const Professor = require('./models/professor');
 const { authenticateToken, generateToken } = require('./controller/auth');
@@ -38,25 +37,7 @@ app.use(cors({
 
 
 //routes
-app.post('/course', async (req, res) => {
-    const course = new Course({
-        name: req.body.name,
-        code: req.body.code,
-        description: req.body.description,
-        professorId: req.body.professorId
-    })
-
-    try {
-        const courseCreated = await course.save();
-        //add header location to the response
-        res.header('Location', `/course?id=${courseCreated._id}`);
-        res.status(201).json(courseCreated)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-});
-
+app.use('/api', require('./routes/course'));
 //autn routes
 app.post('/auth/token', generateToken);
 
